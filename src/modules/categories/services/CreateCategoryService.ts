@@ -1,3 +1,4 @@
+import AppError from '../../../errors/AppError';
 import Category from '../model/Category';
 import ICategoriesRepository from '../repositories/ICategoriesRepository';
 
@@ -13,7 +14,7 @@ class CreateCategoryService {
     const categoryAlreadyExists = this.categoriesRepository.findByName(name);
 
     if (categoryAlreadyExists) {
-      throw new Error('Category already exists!');
+      throw new AppError('Category already exists!');
     }
 
     const category = this.categoriesRepository.create({ name, description });
