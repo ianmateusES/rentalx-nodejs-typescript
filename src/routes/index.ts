@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
-import categoriesRouter from '../modules/categories/routes/categories.routes';
+import { categoriesRoutes } from './categories.routes';
+import { specificationsRoutes } from './specifications.routes';
 
 const routes = Router();
 
@@ -8,6 +9,7 @@ routes.get('/', (req, res) => {
   return res.json({ mensage: 'Air application' });
 });
 
-routes.use('/categories', categoriesRouter);
+routes.use('/categories', categoriesRoutes);
+routes.use('/specifications', specificationsRoutes);
 
 export default routes;
