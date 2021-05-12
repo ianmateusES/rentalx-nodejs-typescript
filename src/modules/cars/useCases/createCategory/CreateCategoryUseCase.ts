@@ -1,5 +1,7 @@
+import { injectable, inject } from 'tsyringe';
+
 import { AppError } from '../../../../errors/AppError';
-import { Category } from '../../models/Category';
+import { Category } from '../../entities/Category';
 import { ICategoriesRepository } from '../../repositories/ICategoriesRepository';
 
 interface IRequest {
@@ -7,17 +9,26 @@ interface IRequest {
   description: string;
 }
 
+@injectable()
 class CreateCategoryUseCase {
-  constructor(private categoriesRepository: ICategoriesRepository) {}
+  constructor(
+    @inject('CategoriesRepository')
+    private categoriesRepository: ICategoriesRepository,
+  ) {}
 
-  public execute({ name, description }: IRequest): Category {
-    const categoryAlreadyExists = this.categoriesRepository.findByName(name);
+  public async execute({ name, description }: IRequest): Promise<Category> {
+    const categoryAlreadyExists = await this.categoriesRepository.findByName(
+      name,
+    );
 
     if (categoryAlreadyExists) {
       throw new AppError('Category already exists!');
     }
 
-    const category = this.categoriesRepository.create({ name, description });
+    const category = await this.categoriesRepository.create({
+      name,
+      description,
+    });
 
     return category;
   }

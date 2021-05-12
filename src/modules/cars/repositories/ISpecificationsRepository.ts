@@ -1,10 +1,10 @@
 import { ISpecificationDTO } from '../dtos/ISpecificationDTO';
-import { Specification } from '../models/Specification';
+import { Specification } from '../entities/Specification';
 
 interface ISpecificationsRepository {
-  create(data: ISpecificationDTO): Specification;
-  findAll(): Specification[];
-  findByName(name: string): Specification | undefined;
+  create(data: ISpecificationDTO): Promise<Specification>;
+  findAllSpecification(): Promise<Specification[]>;
+  findByName(name: string): Promise<Specification | undefined>;
 }
 
 export { ISpecificationsRepository };

@@ -1,7 +1,8 @@
 import csvParse from 'csv-parse';
 import fs from 'fs';
+import { injectable, inject } from 'tsyringe';
 
-import { Category } from '../../models/Category';
+import { Category } from '../../entities/Category';
 import { ICategoriesRepository } from '../../repositories/ICategoriesRepository';
 
 interface IImportCategories {
@@ -9,8 +10,12 @@ interface IImportCategories {
   description: string;
 }
 
+@injectable()
 class ImportCategoryUseCase {
-  constructor(private categoriesRepository: ICategoriesRepository) {}
+  constructor(
+    @inject('CategoriesRepository')
+    private categoriesRepository: ICategoriesRepository,
+  ) {}
 
   private async loadCategories(
     file: Express.Multer.File,
@@ -31,9 +36,12 @@ class ImportCategoryUseCase {
         })
         .on('end', () => {
           resolve(categories);
+          fs.promises.unlink(file.path);
         })
-        .on('error', err => reject(err));
-      fs.promises.unlink(file.path);
+        .on('error', err => {
+          fs.promises.unlink(file.path);
+          reject(err);
+        });
     });
   }
 
@@ -41,15 +49,19 @@ class ImportCategoryUseCase {
     const categories = await this.loadCategories(file);
     const categoriesCreate = [];
 
-    categories.map(async category => {
-      const { name } = category;
-      const existCategory = this.categoriesRepository.findByName(name);
+    await Promise.all(
+      categories.map(async category => {
+        const { name } = category;
+        const existCategory = await this.categoriesRepository.findByName(name);
 
-      if (!existCategory) {
-        const categoryCreate = this.categoriesRepository.create(category);
-        categoriesCreate.push(categoryCreate);
-      }
-    });
+        if (!existCategory) {
+          const categoryCreate = await this.categoriesRepository.create(
+            category,
+          );
+          categoriesCreate.push(categoryCreate);
+        }
+      }),
+    );
 
     return categoriesCreate;
   }
