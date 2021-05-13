@@ -1,5 +1,5 @@
-import { ISpecificationDTO } from '../dtos/ISpecificationDTO';
-import { Specification } from '../entities/Specification';
+import { ISpecificationDTO } from '../../dtos/ISpecificationDTO';
+import { Specification } from '../../entities/Specification';
 
 interface ISpecificationsRepository {
   create(data: ISpecificationDTO): Promise<Specification>;
