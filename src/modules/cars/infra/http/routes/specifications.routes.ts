@@ -1,8 +1,9 @@
 import { Router } from 'express';
 
-import ensureAuthenticated from '../../../shared/middleware/ensureAuthenticated';
-import { CreateSpecificationController } from '../useCases/specifications/createSpecification/CreateSpecificationController';
-import { ListSpecificationsController } from '../useCases/specifications/listSpecifications/ListSpecificationsController';
+import ensureAuthenticated from '@shared/infra/http/middleware/ensureAuthenticated';
+
+import { CreateSpecificationController } from '../../../useCases/specifications/createSpecification/CreateSpecificationController';
+import { ListSpecificationsController } from '../../../useCases/specifications/listSpecifications/ListSpecificationsController';
 
 const specificationsRoutes = Router();
 

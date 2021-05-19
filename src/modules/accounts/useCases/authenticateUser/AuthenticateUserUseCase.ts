@@ -1,9 +1,10 @@
 import { sign } from 'jsonwebtoken';
 import { injectable, inject } from 'tsyringe';
 
-import authConfig from '../../../../config/auth';
-import { AppError } from '../../../../shared/errors/AppError';
-import { User } from '../../entities/User';
+import authConfig from '@config/auth';
+import { AppError } from '@shared/errors/AppError';
+
+import { User } from '../../infra/typeorm/entities/User';
 import { IHashProvider } from '../../providers/HashProvider/models/IHashProvider';
 import { IUsersRepository } from '../../repositories/IUsersRepository';
 

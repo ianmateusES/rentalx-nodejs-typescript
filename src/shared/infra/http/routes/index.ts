@@ -1,9 +1,9 @@
 import { Router } from 'express';
 
-import { authenticateRoutes } from '../../modules/accounts/routes/authenticate.routes';
-import { usersRoutes } from '../../modules/accounts/routes/users.routes';
-import { categoriesRoutes } from '../../modules/cars/routes/categories.routes';
-import { specificationsRoutes } from '../../modules/cars/routes/specifications.routes';
+import { authenticateRoutes } from '@modules/accounts/routes/authenticate.routes';
+import { usersRoutes } from '@modules/accounts/routes/users.routes';
+import { categoriesRoutes } from '@modules/cars/infra/http/routes/categories.routes';
+import { specificationsRoutes } from '@modules/cars/infra/http/routes/specifications.routes';
 
 const routes = Router();
 
