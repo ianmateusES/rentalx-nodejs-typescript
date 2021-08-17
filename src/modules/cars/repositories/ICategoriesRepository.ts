@@ -5,7 +5,8 @@ interface ICategoriesRepository {
   create(data: ICreateCategoryDTO): Promise<Category>;
   save(category: Category): Promise<Category>;
   findAllCategory(): Promise<Category[]>;
-  findByName(name: string): Promise<Category | undefined>;
+  findById(id: string): Promise<Category>;
+  findByName(name: string): Promise<Category>;
 }
 
 export { ICategoriesRepository };

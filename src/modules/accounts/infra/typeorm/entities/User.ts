@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -5,6 +6,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { v4 as uuidV4 } from 'uuid';
 
 @Entity('users')
 class User {
@@ -24,9 +26,11 @@ class User {
   drive_license: string;
 
   @Column()
+  @Exclude()
   password: string;
 
-  @Column()
+  @Column({ default: false })
+  @Exclude()
   isAdmin: boolean;
 
   @Column()
@@ -37,6 +41,12 @@ class User {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  constructor() {
+    if (!this.id) {
+      this.id = uuidV4();
+    }
+  }
 }
 
 export { User };

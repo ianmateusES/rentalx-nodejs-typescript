@@ -1,26 +1,26 @@
 import { AppError } from '@shared/errors/AppError';
 
-import { FakeHashProvider } from '../../providers/HashProvider/fakes/FakeHashProvider';
+import { HashProviderInMemory } from '../../providers/HashProvider/in-memory/HashProviderInMemory';
 import { UsersRepositoryInMemory } from '../../repositories/in-memory/UsersRepositoryInMemory';
 import { CreateUserUseCase } from '../createUser/CreateUserUseCase';
 import { AuthenticateUserUseCase } from './AuthenticateUserUseCase';
 
 let usersRepositoryInMemory: UsersRepositoryInMemory;
 let authenticateUserUseCase: AuthenticateUserUseCase;
-let fakeHashProvider: FakeHashProvider;
+let hashProviderInMemory: HashProviderInMemory;
 let createUserUseCase: CreateUserUseCase;
 
 describe('Authenticate User', () => {
   beforeEach(() => {
     usersRepositoryInMemory = new UsersRepositoryInMemory();
-    fakeHashProvider = new FakeHashProvider();
+    hashProviderInMemory = new HashProviderInMemory();
     createUserUseCase = new CreateUserUseCase(
       usersRepositoryInMemory,
-      fakeHashProvider,
+      hashProviderInMemory,
     );
     authenticateUserUseCase = new AuthenticateUserUseCase(
       usersRepositoryInMemory,
-      fakeHashProvider,
+      hashProviderInMemory,
     );
   });
 
@@ -65,6 +65,8 @@ describe('Authenticate User', () => {
         username: 'leoMarques',
         password: 'wrong-password',
       }),
-    ).rejects.toBeInstanceOf(AppError);
+    ).rejects.toEqual(
+      new AppError('Incorrect username/password combination', 401),
+    );
   });
 });

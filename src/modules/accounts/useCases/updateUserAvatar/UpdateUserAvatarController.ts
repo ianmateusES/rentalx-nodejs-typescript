@@ -1,3 +1,4 @@
+import { classToClass } from 'class-transformer';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
@@ -12,7 +13,7 @@ class UpdateUserAvatarController {
       avatarFilename: req.file.filename,
     });
 
-    return res.status(201).json(user);
+    return res.status(201).json(classToClass(user));
   }
 }
 

@@ -33,6 +33,7 @@ class SpecificationsRepositoryInMemory implements ISpecificationsRepository {
       findSpecification => findSpecification.id === specification.id,
     );
 
+    Object.assign(specification, { updated_at: new Date() });
     this.specifications[findIndex] = specification;
 
     return specification;
@@ -42,10 +43,28 @@ class SpecificationsRepositoryInMemory implements ISpecificationsRepository {
     return this.specifications;
   }
 
+  public async findById(id: string): Promise<Specification> {
+    const specification = this.specifications.find(
+      specification => specification.id === id,
+    );
+
+    return specification;
+  }
+
+  public async findByIds(ids: string[]): Promise<Specification[]> {
+    const specifications = this.specifications.filter(specification =>
+      ids.includes(specification.id),
+    );
+
+    return specifications;
+  }
+
   public async findByName(name: string): Promise<Specification> {
-    return this.specifications.find(
+    const specification = this.specifications.find(
       specification => specification.name === name,
     );
+
+    return specification;
   }
 }
 

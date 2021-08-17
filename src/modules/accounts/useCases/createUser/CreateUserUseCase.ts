@@ -31,15 +31,15 @@ class CreateUserUseCase {
     drive_license,
     password,
   }: IRequest): Promise<User> {
-    const userEmailAlreadExist = await this.userRepository.findByEmail(email);
-    if (userEmailAlreadExist) {
+    const userEmailAlreadyExist = await this.userRepository.findByEmail(email);
+    if (userEmailAlreadyExist) {
       throw new AppError('Email already used', 401);
     }
 
-    const userUserNameAlreadExist = await this.userRepository.findByUserName(
+    const userUserNameAlreadyExist = await this.userRepository.findByUserName(
       username,
     );
-    if (userUserNameAlreadExist) {
+    if (userUserNameAlreadyExist) {
       throw new AppError('Username already used', 401);
     }
 

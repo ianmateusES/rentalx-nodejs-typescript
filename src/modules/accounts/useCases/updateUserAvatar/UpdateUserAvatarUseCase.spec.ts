@@ -1,20 +1,20 @@
-import { FakeStorageProvider } from '@shared/container/providers/StorageProvider/fakes/FakeStorageProvider';
+import { StorageProviderInMemory } from '@shared/container/providers/StorageProvider/in-memory/StorageProviderInMemory';
 import { AppError } from '@shared/errors/AppError';
 
 import { UsersRepositoryInMemory } from '../../repositories/in-memory/UsersRepositoryInMemory';
 import { UpdateUserAvatarUseCase } from './UpdateUserAvatarUseCase';
 
-let fakeStorageProvider: FakeStorageProvider;
+let storageProviderInMemory: StorageProviderInMemory;
 let usersRepositoryInMemory: UsersRepositoryInMemory;
 let updateUserAvatarUseCase: UpdateUserAvatarUseCase;
 
 describe('Update User Avatar', () => {
   beforeEach(() => {
-    fakeStorageProvider = new FakeStorageProvider();
+    storageProviderInMemory = new StorageProviderInMemory();
     usersRepositoryInMemory = new UsersRepositoryInMemory();
     updateUserAvatarUseCase = new UpdateUserAvatarUseCase(
       usersRepositoryInMemory,
-      fakeStorageProvider,
+      storageProviderInMemory,
     );
   });
 
@@ -41,11 +41,13 @@ describe('Update User Avatar', () => {
         user_id: 'non-existing-user',
         avatarFilename: 'avatar.jpg',
       }),
-    ).rejects.toBeInstanceOf(AppError);
+    ).rejects.toEqual(
+      new AppError('Only authenticated users can change avatar', 401),
+    );
   });
 
   it('should delete old avatar when updating new one', async () => {
-    const deleteFile = jest.spyOn(fakeStorageProvider, 'deleteFile');
+    const deleteFile = jest.spyOn(storageProviderInMemory, 'deleteFile');
 
     const user = await usersRepositoryInMemory.create({
       username: 'leoMarques',
@@ -65,7 +67,7 @@ describe('Update User Avatar', () => {
       avatarFilename: 'avatar2.jpg',
     });
 
-    expect(deleteFile).toHaveBeenCalledWith('avatar.jpg');
+    expect(deleteFile).toHaveBeenCalledWith('avatar.jpg', 'avatar');
     expect(user.avatar).toBe('avatar2.jpg');
   });
 });

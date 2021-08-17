@@ -1,5 +1,3 @@
-import { v4 as uuidV4 } from 'uuid';
-
 import { ICreateUserDTO } from '../../dtos/ICreateUserDTO';
 import { User } from '../../infra/typeorm/entities/User';
 import { IUsersRepository } from '../IUsersRepository';
@@ -13,19 +11,16 @@ class UsersRepositoryInMemory implements IUsersRepository {
 
   public async findById(id: string): Promise<User> {
     const user = this.users.find(user => user.id === id);
-
     return user;
   }
 
   public async findByEmail(email: string): Promise<User> {
     const user = this.users.find(user => user.email === email);
-
     return user;
   }
 
   public async findByUserName(username: string): Promise<User> {
     const user = this.users.find(user => user.username === username);
-
     return user;
   }
 
@@ -39,12 +34,13 @@ class UsersRepositoryInMemory implements IUsersRepository {
     const user = new User();
 
     Object.assign(user, {
-      id: uuidV4(),
       name,
       email,
       username,
       drive_license,
       password,
+      created_at: new Date(),
+      updated_at: new Date(),
     });
 
     this.users.push(user);
@@ -54,9 +50,8 @@ class UsersRepositoryInMemory implements IUsersRepository {
 
   public async save(user: User): Promise<User> {
     const findIndex = this.users.findIndex(finduser => finduser.id === user.id);
-
+    Object.assign(user, { updated_at: new Date() });
     this.users[findIndex] = user;
-
     return user;
   }
 }

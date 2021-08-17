@@ -34,6 +34,6 @@ describe('Create category', () => {
         name: 'SUV',
         description: 'Categoria de carros SUV',
       }),
-    ).rejects.toBeInstanceOf(AppError);
+    ).rejects.toEqual(new AppError('Category already exists'));
   });
 });

@@ -1,9 +1,12 @@
 import { Router } from 'express';
 
-import { authenticateRoutes } from '@modules/accounts/routes/authenticate.routes';
-import { usersRoutes } from '@modules/accounts/routes/users.routes';
-import { categoriesRoutes } from '@modules/cars/infra/http/routes/categories.routes';
-import { specificationsRoutes } from '@modules/cars/infra/http/routes/specifications.routes';
+import { usersRoutes, authenticateRoutes } from '@modules/accounts/routes';
+import {
+  carsRoutes,
+  categoriesRoutes,
+  specificationsRoutes,
+} from '@modules/cars/infra/http/routes';
+import { rentalRoutes } from '@modules/rentals/infra/http/routes';
 
 const routes = Router();
 
@@ -14,6 +17,8 @@ routes.get('/', (req, res) => {
 routes.use('/categories', categoriesRoutes);
 routes.use('/specifications', specificationsRoutes);
 routes.use('/users', usersRoutes);
+routes.use('/cars', carsRoutes);
+routes.use('/rentals', rentalRoutes);
 routes.use(authenticateRoutes);
 
 export { routes };

@@ -11,7 +11,7 @@ interface ITockenPayload {
   sub: string;
 }
 
-export default function ensureAuthenticated(
+export function ensureAuthenticated(
   req: Request,
   res: Response,
   next: NextFunction,

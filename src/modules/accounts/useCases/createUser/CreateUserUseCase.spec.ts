@@ -1,20 +1,20 @@
 import { AppError } from '@shared/errors/AppError';
 
-import { FakeHashProvider } from '../../providers/HashProvider/fakes/FakeHashProvider';
+import { HashProviderInMemory } from '../../providers/HashProvider/in-memory/HashProviderInMemory';
 import { UsersRepositoryInMemory } from '../../repositories/in-memory/UsersRepositoryInMemory';
 import { CreateUserUseCase } from './CreateUserUseCase';
 
 let usersRepositoryInMemory: UsersRepositoryInMemory;
-let fakeHashProvider: FakeHashProvider;
+let hashProviderInMemory: HashProviderInMemory;
 let createUserUseCase: CreateUserUseCase;
 
 describe('Create User', () => {
   beforeEach(() => {
     usersRepositoryInMemory = new UsersRepositoryInMemory();
-    fakeHashProvider = new FakeHashProvider();
+    hashProviderInMemory = new HashProviderInMemory();
     createUserUseCase = new CreateUserUseCase(
       usersRepositoryInMemory,
-      fakeHashProvider,
+      hashProviderInMemory,
     );
   });
 
@@ -42,12 +42,12 @@ describe('Create User', () => {
     await expect(
       createUserUseCase.execute({
         name: 'Leo Marques',
-        username: 'leoMarques',
+        username: 'leoMarques2',
         email: 'leomarques@exemplo.com',
         drive_license: '112233',
         password: '123456',
       }),
-    ).rejects.toBeInstanceOf(AppError);
+    ).rejects.toEqual(new AppError('Email already used', 401));
   });
 
   it('should not be able to create a new user with same username from another', async () => {
@@ -67,6 +67,6 @@ describe('Create User', () => {
         drive_license: '41122334',
         password: '123456',
       }),
-    ).rejects.toBeInstanceOf(AppError);
+    ).rejects.toEqual(new AppError('Username already used', 401));
   });
 });
