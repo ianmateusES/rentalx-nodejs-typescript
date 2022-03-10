@@ -5,8 +5,8 @@ interface IDateProvider {
   convertToUTC(date: Date): string;
   dateNow();
 
-  addDays(days: number, reference_date: Date): Date;
-  addHours(hours: number, reference_date: Date): Date;
+  addDays(days: number, reference_date?: Date): Date;
+  addHours(hours: number, reference_date?: Date): Date;
 
   checkIsBefore(start_date: Date, end_date: Date): boolean;
 }

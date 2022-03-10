@@ -1,6 +1,10 @@
 import { Router } from 'express';
 
-import { usersRoutes, authenticateRoutes } from '@modules/accounts/routes';
+import {
+  authenticateRoutes,
+  passwordRoutes,
+  usersRoutes,
+} from '@modules/accounts/infra/http/routes';
 import {
   carsRoutes,
   categoriesRoutes,
@@ -17,6 +21,7 @@ routes.get('/', (req, res) => {
 routes.use('/categories', categoriesRoutes);
 routes.use('/specifications', specificationsRoutes);
 routes.use('/users', usersRoutes);
+routes.use('/password', passwordRoutes);
 routes.use('/cars', carsRoutes);
 routes.use('/rentals', rentalRoutes);
 routes.use(authenticateRoutes);

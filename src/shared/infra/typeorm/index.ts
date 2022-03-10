@@ -21,6 +21,10 @@ export default async (): Promise<Connection> => {
     Object.assign(defaultOptions, {
       host: process.env.DB_HOST || 'localhost',
       password: process.env.DB_PASSWORD || 'default',
+      database:
+        process.env.NODE_ENV === 'test'
+          ? 'rentx_test'
+          : defaultOptions.database,
     }),
   );
 };

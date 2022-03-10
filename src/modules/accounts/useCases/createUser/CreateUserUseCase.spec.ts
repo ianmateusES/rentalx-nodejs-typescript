@@ -23,7 +23,7 @@ describe('Create User', () => {
       name: 'Leo Marques',
       username: 'leoMarques',
       email: 'leomarques@exemplo.com',
-      drive_license: '112233',
+      driver_license: '112233',
       password: '123456',
     });
 
@@ -35,7 +35,7 @@ describe('Create User', () => {
       name: 'Leo Marques',
       username: 'leoMarques',
       email: 'leomarques@exemplo.com',
-      drive_license: '112233',
+      driver_license: '112233',
       password: '123456',
     });
 
@@ -44,7 +44,7 @@ describe('Create User', () => {
         name: 'Leo Marques',
         username: 'leoMarques2',
         email: 'leomarques@exemplo.com',
-        drive_license: '112233',
+        driver_license: '112233',
         password: '123456',
       }),
     ).rejects.toEqual(new AppError('Email already used', 401));
@@ -55,7 +55,7 @@ describe('Create User', () => {
       name: 'Leo Marques',
       username: 'leoMarques',
       email: 'leomarques@exemplo.com',
-      drive_license: '112233',
+      driver_license: '112233',
       password: '123456',
     });
 
@@ -64,7 +64,7 @@ describe('Create User', () => {
         name: 'Leo Marques 2',
         username: 'leoMarques',
         email: 'leomarques2@exemplo.com',
-        drive_license: '41122334',
+        driver_license: '41122334',
         password: '123456',
       }),
     ).rejects.toEqual(new AppError('Username already used', 401));

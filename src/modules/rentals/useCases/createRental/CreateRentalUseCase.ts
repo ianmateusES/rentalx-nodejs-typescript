@@ -45,6 +45,7 @@ class CreateRentalUseCase {
       throw new AppError('User not found');
     }
 
+    // Não deve ser possível alugar caso carro esteja alugado
     const carIsUnavailable = await this.rentalsRepository.findOpenRentalByCar(
       car_id,
     );
@@ -52,6 +53,7 @@ class CreateRentalUseCase {
       throw new AppError('Car is unavailable');
     }
 
+    // Não deve ser possível cadastrar um novo aluguel caso já exista um aberto para usuário
     const userOccupied = await this.rentalsRepository.findOpenRentalByUser(
       user_id,
     );
@@ -59,11 +61,11 @@ class CreateRentalUseCase {
       throw new AppError('User with rental in progress');
     }
 
+    // O aluguel deve ter duração mínima de 24 horas
     const compare = this.dateProvider.compareInHours(
       this.dateProvider.dateNow(),
       expected_return_date,
     );
-
     const rentalMinDurationHours = 24;
     if (compare < rentalMinDurationHours) {
       throw new AppError('Invalid return time!');

@@ -1,8 +1,8 @@
-import { hash } from 'bcrypt';
 import request from 'supertest';
 import { Connection } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
+import { BCryptHashProvider } from '@modules/accounts/providers/HashProvider/implementations/BCryptHashProvider';
 import { app } from '@shared/infra/http/app';
 import createConnection from '@shared/infra/typeorm';
 
@@ -13,11 +13,12 @@ describe('Create Category Controller', () => {
     await connection.runMigrations();
 
     const id = uuid();
-    const password = await hash('admin', 8);
+    const bCryptHashProvider = new BCryptHashProvider();
+    const password = await bCryptHashProvider.generateHash('admin');
 
     await connection.query(
-      `INSERT INTO USERS(id, name, email, password, "isAdmin", created_at, driver_license )
-        values('${id}', 'admin', 'admin@rentx.com.br', '${password}', true, 'now()', 'XXXXXX')
+      `INSERT INTO USERS(id, name, username, email, password, "isAdmin", driver_license)
+        values('${id}', 'admin', 'superadmin', 'admin@rentx.com.br', '${password}', true, 'XXXXXX')
       `,
     );
   });
@@ -29,11 +30,11 @@ describe('Create Category Controller', () => {
 
   it('should be able to create a new category', async () => {
     const responseToken = await request(app).post('/sessions').send({
-      email: 'admin@rentx.com.br',
+      username: 'superadmin',
       password: 'admin',
     });
 
-    const { refresh_token } = responseToken.body;
+    const { token } = responseToken.body;
 
     const response = await request(app)
       .post('/categories')
@@ -42,7 +43,7 @@ describe('Create Category Controller', () => {
         description: 'Category Supertest',
       })
       .set({
-        Authorization: `Bearer ${refresh_token}`,
+        Authorization: `Bearer ${token}`,
       });
 
     expect(response.status).toBe(201);
@@ -50,11 +51,11 @@ describe('Create Category Controller', () => {
 
   it('should not be able to create a new category with name exists', async () => {
     const responseToken = await request(app).post('/sessions').send({
-      email: 'admin@rentx.com.br',
+      username: 'superadmin',
       password: 'admin',
     });
 
-    const { refresh_token } = responseToken.body;
+    const { token } = responseToken.body;
 
     const response = await request(app)
       .post('/categories')
@@ -63,7 +64,7 @@ describe('Create Category Controller', () => {
         description: 'Category Supertest',
       })
       .set({
-        Authorization: `Bearer ${refresh_token}`,
+        Authorization: `Bearer ${token}`,
       });
 
     expect(response.status).toBe(400);

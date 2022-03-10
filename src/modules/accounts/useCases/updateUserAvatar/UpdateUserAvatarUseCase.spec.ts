@@ -21,7 +21,7 @@ describe('Update User Avatar', () => {
   it('should be able to create a new user', async () => {
     const user = await usersRepositoryInMemory.create({
       username: 'leoMarques',
-      drive_license: '112233',
+      driver_license: '112233',
       name: 'Leo Marques',
       email: 'leomarques@exemplo.com',
       password: '123456',
@@ -51,7 +51,7 @@ describe('Update User Avatar', () => {
 
     const user = await usersRepositoryInMemory.create({
       username: 'leoMarques',
-      drive_license: '112233',
+      driver_license: '112233',
       name: 'Leo Marques',
       email: 'leomarques@exemplo.com',
       password: '123456',

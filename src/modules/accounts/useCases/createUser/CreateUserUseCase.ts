@@ -10,7 +10,7 @@ interface IRequest {
   name: string;
   username: string;
   email: string;
-  drive_license: string;
+  driver_license: string;
   password: string;
 }
 
@@ -28,7 +28,7 @@ class CreateUserUseCase {
     name,
     username,
     email,
-    drive_license,
+    driver_license,
     password,
   }: IRequest): Promise<User> {
     const userEmailAlreadyExist = await this.userRepository.findByEmail(email);
@@ -49,7 +49,7 @@ class CreateUserUseCase {
       name,
       username,
       email,
-      drive_license,
+      driver_license,
       password: hashedPassword,
     });
 

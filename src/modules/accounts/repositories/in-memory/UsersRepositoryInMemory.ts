@@ -28,7 +28,7 @@ class UsersRepositoryInMemory implements IUsersRepository {
     name,
     email,
     username,
-    drive_license,
+    driver_license,
     password,
   }: ICreateUserDTO): Promise<User> {
     const user = new User();
@@ -37,7 +37,7 @@ class UsersRepositoryInMemory implements IUsersRepository {
       name,
       email,
       username,
-      drive_license,
+      driver_license,
       password,
       created_at: new Date(),
       updated_at: new Date(),

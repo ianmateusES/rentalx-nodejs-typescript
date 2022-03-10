@@ -5,9 +5,7 @@ import authConfig from '@config/auth';
 
 import { AppError } from '../../../errors/AppError';
 
-interface ITockenPayload {
-  iat: number;
-  exp: number;
+interface IPayload {
   sub: string;
 }
 
@@ -25,16 +23,14 @@ export function ensureAuthenticated(
   const [, token] = authHeader.split(' ');
 
   try {
-    const decoded = verify(token, authConfig.jwt.secret);
-
-    const { sub } = decoded as ITockenPayload;
+    const { sub: user_id } = verify(token, authConfig.jwt.secret) as IPayload;
 
     req.user = {
-      id: sub,
+      id: user_id,
     };
 
     return next();
   } catch {
-    throw new AppError('Invalid JWT token', 401);
+    throw new AppError('Invalid token', 401);
   }
 }

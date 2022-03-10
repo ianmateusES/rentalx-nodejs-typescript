@@ -1,19 +1,25 @@
+import { DayjsDateProvider } from '@shared/container/providers/DateProvider/implementations/DayJsDateProvider';
 import { AppError } from '@shared/errors/AppError';
 
 import { HashProviderInMemory } from '../../providers/HashProvider/in-memory/HashProviderInMemory';
 import { UsersRepositoryInMemory } from '../../repositories/in-memory/UsersRepositoryInMemory';
+import { UserTokensRepositoryInMemory } from '../../repositories/in-memory/UserTokensRepositoryInMemory';
 import { CreateUserUseCase } from '../createUser/CreateUserUseCase';
 import { AuthenticateUserUseCase } from './AuthenticateUserUseCase';
 
 let usersRepositoryInMemory: UsersRepositoryInMemory;
+let userTokensRepositoryInMemory: UserTokensRepositoryInMemory;
 let authenticateUserUseCase: AuthenticateUserUseCase;
 let hashProviderInMemory: HashProviderInMemory;
 let createUserUseCase: CreateUserUseCase;
+let dayjsDateProvider: DayjsDateProvider;
 
 describe('Authenticate User', () => {
   beforeEach(() => {
     usersRepositoryInMemory = new UsersRepositoryInMemory();
+    userTokensRepositoryInMemory = new UserTokensRepositoryInMemory();
     hashProviderInMemory = new HashProviderInMemory();
+    dayjsDateProvider = new DayjsDateProvider();
     createUserUseCase = new CreateUserUseCase(
       usersRepositoryInMemory,
       hashProviderInMemory,
@@ -21,6 +27,8 @@ describe('Authenticate User', () => {
     authenticateUserUseCase = new AuthenticateUserUseCase(
       usersRepositoryInMemory,
       hashProviderInMemory,
+      dayjsDateProvider,
+      userTokensRepositoryInMemory,
     );
   });
 
@@ -29,7 +37,7 @@ describe('Authenticate User', () => {
       name: 'Leo Marques',
       username: 'leoMarques',
       email: 'leomarques@exemplo.com',
-      drive_license: '112233',
+      driver_license: '112233',
       password: '123456',
     });
 
@@ -56,7 +64,7 @@ describe('Authenticate User', () => {
       name: 'Leo Marques',
       username: 'leoMarques',
       email: 'leomarques@exemplo.com',
-      drive_license: '112233',
+      driver_license: '112233',
       password: '123456',
     });
 

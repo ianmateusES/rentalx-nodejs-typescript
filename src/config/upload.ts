@@ -12,6 +12,8 @@ interface IUploadConfig {
     storage: StorageEngine;
   };
 
+  url: string;
+
   config: {
     // disk: {};
     aws: {
@@ -37,10 +39,12 @@ export default {
     }),
   },
 
+  url: process.env.APP_UPLOAD_URL,
+
   config: {
     disk: {},
     aws: {
-      bucket: 'app-gobarber',
+      bucket: process.env.AWS_BUCKET,
     },
   },
 } as IUploadConfig;

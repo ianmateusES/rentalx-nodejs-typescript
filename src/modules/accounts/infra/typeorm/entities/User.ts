@@ -1,4 +1,4 @@
-import { Exclude } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -7,6 +7,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { v4 as uuidV4 } from 'uuid';
+
+import uploadConfig from '@config/upload';
 
 @Entity('users')
 class User {
@@ -23,7 +25,7 @@ class User {
   email: string;
 
   @Column()
-  drive_license: string;
+  driver_license: string;
 
   @Column()
   @Exclude()
@@ -41,6 +43,21 @@ class User {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @Expose({ name: 'avatar_url' })
+  getAvatar_url(): string | null {
+    if (!this.avatar) {
+      return null;
+    }
+    switch (uploadConfig.driver) {
+      case 'disk':
+        return `${uploadConfig.url}/avatar/${this.avatar}`;
+      case 's3':
+        return `${uploadConfig.url}/avatar/${this.avatar}`;
+      default:
+        return null;
+    }
+  }
 
   constructor() {
     if (!this.id) {

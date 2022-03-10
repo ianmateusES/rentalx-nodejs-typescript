@@ -12,7 +12,7 @@ async function create() {
   const password = await bCryptHashProvider.generateHash('admin');
 
   await connection.query(
-    `INSERT INTO USERS(id, name, username, email, password, "isAdmin", drive_license)
+    `INSERT INTO USERS(id, name, username, email, password, "isAdmin", driver_license)
     VALUES ('${id}', 'admin', 'superadmin', 'admin@rentx.com.br', '${password}', true, 'XXXXXXX')`,
   );
 

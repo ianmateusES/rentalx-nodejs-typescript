@@ -21,12 +21,12 @@ class DayjsDateProvider implements IDateProvider {
     return dayjs().toDate();
   }
 
-  public addDays(days: number, reference_date: Date = null): Date {
+  public addDays(days: number, reference_date?: Date): Date {
     const date = reference_date ? dayjs(reference_date) : dayjs();
     return date.add(days, 'day').toDate();
   }
 
-  public addHours(hours: number, reference_date: Date): Date {
+  public addHours(hours: number, reference_date?: Date): Date {
     const date = reference_date ? dayjs(reference_date) : dayjs();
     return date.add(hours, 'hour').toDate();
   }

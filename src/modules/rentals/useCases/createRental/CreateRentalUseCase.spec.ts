@@ -15,7 +15,7 @@ let usersRepositoryInMemory: UsersRepositoryInMemory;
 let dayjsDateProvider: DayjsDateProvider;
 
 describe('Create Rental', () => {
-  const dayAdd24Hours = dayjs().add(1, 'day').toDate();
+  const dayAdd24Hours = dayjs().add(2, 'day').toDate();
 
   beforeEach(() => {
     rentalsRepositoryInMemory = new RentalsRepositoryInMemory();
@@ -36,7 +36,7 @@ describe('Create Rental', () => {
       email: 'ian@gmail.com',
       password: '123456',
       name: 'Ian Mateus',
-      drive_license: 'XXXXX',
+      driver_license: 'XXXXX',
     });
 
     const car = await carsRepositoryInMemory.create({
@@ -65,7 +65,7 @@ describe('Create Rental', () => {
       email: 'ian@gmail.com',
       password: '123456',
       name: 'Ian Mateus',
-      drive_license: 'XXXXX',
+      driver_license: 'XXXXX',
     });
 
     const car1 = await carsRepositoryInMemory.create({
@@ -109,7 +109,7 @@ describe('Create Rental', () => {
       email: 'ian@gmail.com',
       password: '123456',
       name: 'Ian Mateus',
-      drive_license: 'XXXXX',
+      driver_license: 'XXXXX',
     });
 
     const car = await carsRepositoryInMemory.create({
@@ -143,7 +143,7 @@ describe('Create Rental', () => {
       email: 'ian@gmail.com',
       password: '123456',
       name: 'Ian Mateus',
-      drive_license: 'XXXXX',
+      driver_license: 'XXXXX',
     });
 
     const car = await carsRepositoryInMemory.create({

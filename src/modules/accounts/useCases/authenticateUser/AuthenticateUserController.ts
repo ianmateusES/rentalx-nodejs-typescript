@@ -1,3 +1,4 @@
+import { classToClass } from 'class-transformer';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
@@ -9,12 +10,18 @@ class AuthenticateUserController {
 
     const authenticateUserUseCase = container.resolve(AuthenticateUserUseCase);
 
-    const { user, token } = await authenticateUserUseCase.execute({
+    const {
+      user,
+      token,
+      refresh_token,
+    } = await authenticateUserUseCase.execute({
       username,
       password,
     });
 
-    return res.status(201).json({ user, token });
+    return res
+      .status(201)
+      .json({ user: classToClass(user), token, refresh_token });
   }
 }
 
